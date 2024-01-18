@@ -136,3 +136,88 @@ je me balade dans l'arborescence, ptite balade digestive c'est chill
 je teste des pings y'a pas
 ip a y'a pas  bref 
 (y'a pas, c'est un "OS allégé")
+
+🌞 Récupérez des images
+
+petit "docker pull"
+
+```
+docker pull wordpress
+docker pull mysql
+docker pull python
+docker pull linuxserver/wiki js
+```
+listez les images que vous avez sur la machine avec une commande docker
+
+```
+[bossautruche@localhost ~]$ docker image ls
+REPOSITORY           TAG       IMAGE ID       CREATED       SIZE
+mysql                latest    73246731c4b0   3 days ago    619MB
+linuxserver/wikijs   latest    869729f6d3c5   7 days ago    441MB
+python               latest    fc7a60e86bae   2 weeks ago   1.02GB
+wordpress            latest    fd2f5a0c6fba   2 weeks ago   739MB
+nginx                latest    d453dd892d93   8 weeks ago   187MB
+```
+
+
+🌞 Lancez un conteneur à partir de l'image Python
+
+[bossautruche@localhost ~]$ docker run -it python bash
+root@a5de99f71902:/# python
+Python 3.12.1 (main, Dec 19 2023, 20:14:15) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+>>> exit()
+root@a5de99f71902:/#
+
+
+ 🌞Ecrire un Dockerfile pour une image qui héberge une application Python
+
+ ```
+[bossautruche@localhost ~]$ cd python_app_build/
+[bossautruche@localhost python_app_build]$ ls
+Dockerfile  app.py
+ ```
+
+ 🌞 Build l'image 
+ ```
+ [bossautruche@localhost python_app_build]$ docker build . -t python_app_build:version_de_ouf
+[+] Building 11.7s (10/10) FINISHED                          docker:default
+ => [internal] load .dockerignore                                      0.0s
+ => => transferring context: 2B                                        0.0s
+ => [internal] load build definition from Dockerfile                   0.1s
+ => => transferring dockerfile: 263B                                   0.0s
+ => [internal] load metadata for docker.io/library/debian:latest       0.8s
+ => [1/5] FROM docker.io/library/debian:latest@sha256:bac353db4cc04bc  0.0s
+ => [internal] load build context                                      0.0s
+ => => transferring context: 86B                                       0.0s
+ => CACHED [2/5] RUN apt update || true                                0.0s
+ => CACHED [3/5] RUN apt install -y python3                            0.0s
+ => [4/5] RUN apt-get install -y python3-emoji                         4.8s
+ => [5/5] COPY app.py /app.py                                          0.4s
+ => exporting to image                                                 5.3s
+ => => exporting layers                                                5.2s
+ => => writing image sha256:f3d6bfb30d3922d37a7282f53bdc4833665598bd9  0.0s
+ => => naming to docker.io/library/python-app-build:version_de_ouf     0.0s
+ ```
+
+ ```
+ [bossautruche@localhost python_app_build]$ docker run python_app:version_de_ouf
+Cet exemple d'application est vraiment naze 👎
+[bossautruche@localhost python_app_build]$
+```
+
+III. Docker compose
+🌞 Créez un fichier docker-compose.yml
+```
+[bossautruche@localhost ~]$ mkdir compose-test
+[bossautruche@localhost ~]$ ls
+compose-test  nginx  python-app-build
+[bossautruche@localhost ~]$ cd compose-test/
+[bossautruche@localhost compose-test]$ nano docker-compose.yml
+```
+
+🌞 Lancez les deux conteneurs avec docker compose
+```
+[bossautruche@localhost compose_test]$ docker compose up -d
+```
